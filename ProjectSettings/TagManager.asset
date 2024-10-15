@@ -38,6 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Fond
+    uniqueID: 1784187391
+    locked: 0
+  - name: Foreground
+    uniqueID: 962032079
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
