@@ -12,6 +12,10 @@ public class PlayerController : MonoBehaviour
     public Sprite spriteGauche;
     public Sprite spriteDroite;
 
+    // Limites du terrain
+    private float minX = -3f;
+    private float maxX = 3f;
+
     void Awake(){
         rb= GetComponent<Rigidbody2D>();
     }
@@ -45,6 +49,18 @@ public class PlayerController : MonoBehaviour
         Vector2 velocity = rb.velocity;
         velocity.x=moveX;
         rb.velocity= velocity;
+
+        // Vérifier les limites et téléporter si nécessaire
+        if (transform.position.x > maxX)
+        {
+            // Si on dépasse maxX (3), on téléporte à minX (-3)
+            transform.position = new Vector2(minX, transform.position.y);
+        }
+        else if (transform.position.x < minX)
+        {
+            // Si on dépasse minX (-3), on téléporte à maxX (3)
+            transform.position = new Vector2(maxX, transform.position.y);
+        }
 
 
     }

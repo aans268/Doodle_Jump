@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6499484383766820672}
   - component: {fileID: 3785553421542722582}
   m_Layer: 0
-  m_Name: Platform
+  m_Name: GreenPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

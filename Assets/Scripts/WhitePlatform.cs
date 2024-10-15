@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Platform : MonoBehaviour
+public class WhitePlatform : MonoBehaviour
 {
     public float jumpForce= 10f;
     
@@ -17,6 +17,8 @@ public class Platform : MonoBehaviour
                 Vector2 velocity= rb.velocity;
                 velocity.y=jumpForce;
                 rb.velocity=velocity;
+                Destroy(gameObject);
+
             }
         }
     }
