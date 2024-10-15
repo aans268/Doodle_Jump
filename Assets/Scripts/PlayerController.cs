@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed= 10f;
     public Rigidbody2D rb;
     private float moveX;
+    public SpriteRenderer spriteRenderer;
+    public Sprite spriteGauche;
+    public Sprite spriteDroite;
 
     void Awake(){
         rb= GetComponent<Rigidbody2D>();
@@ -17,6 +20,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         
     }
 
@@ -24,6 +28,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         moveX=Input.GetAxis("Horizontal")*moveSpeed;
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            spriteRenderer.sprite =spriteGauche;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            spriteRenderer.sprite =spriteDroite;
+        }
 
     }
 
