@@ -4,33 +4,113 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public GameObject GreenPlatformPrefab;
     public GameObject BluePlatformPrefab;
     public GameObject BrownPlatformPrefab;
     public GameObject WhitePlatformPrefab;
 
+    public Transform player; // Référence au joueur
+    public int initialPlatformCount = 100;
+    public int minPlatformCount = 20;
 
-    public int platformCount=1000;
+    private float minSpacing = 0.5f;
+    private float maxSpacing = 1.5f;
+    private float minX = -2.7f;
+    private float maxX = 2.7f;
 
-    // Limites du terrain
-    private float minX = -3f;
-    private float maxX = 3f;
+    private Vector3 lastPlatformPosition;
+    private int currentPlatformCount;
 
-    // Start is called before the first frame update
+    // Liste pour stocker les plateformes générées
+    private List<GameObject> platforms = new List<GameObject>();
+
     void Start()
     {
-        Vector3 spawnPosition = new Vector3();
-        for (int i=0; i<platformCount;i++){
-            spawnPosition.y +=Random.Range(.5f, 1.5f);
-            spawnPosition.x = Random.Range(minX,maxX);
-            //Instantiate(GreenPlatformPrefab,spawnPosition,Quaternion.identity);
+        currentPlatformCount = initialPlatformCount;
+        lastPlatformPosition = new Vector3(0, 0, 0); // Initialiser la position
+        GeneratePlatformBatch();
+    }
+
+    void Update()
+    {
+        // Vérifier si le joueur est proche de la dernière plateforme
+        if (player.position.y > lastPlatformPosition.y - 10f)
+        {
+            GeneratePlatformBatch();
+        }
+
+        // Supprimer les plateformes qui sont trop loin sous le joueur
+        RemovePassedPlatforms();
+    }
+
+    void GeneratePlatformBatch()
+    {
+        Vector3 spawnPosition = lastPlatformPosition;
+
+        for (int i = 0; i < currentPlatformCount; i++)
+        {
+            spawnPosition.y += Random.Range(minSpacing, maxSpacing);
+            spawnPosition.x = Random.Range(minX, maxX);
+
+            GameObject platformToSpawn = ChoosePlatform();
+            GameObject newPlatform = Instantiate(platformToSpawn, spawnPosition, Quaternion.identity);
+
+            // Ajouter la plateforme à la liste
+            platforms.Add(newPlatform);
+        }
+
+        // Mettre à jour la position de la dernière plateforme générée
+        lastPlatformPosition = spawnPosition;
+
+        // Réduire le nombre de plateformes générées par batch
+        if (currentPlatformCount > minPlatformCount)
+        {
+            currentPlatformCount--;
+        }
+
+        // Augmenter l'espacement entre les plateformes pour la difficulté
+        minSpacing += 0.1f;
+        maxSpacing += 0.1f;
+    }
+
+    void RemovePassedPlatforms()
+    {
+        // Limite sous laquelle les plateformes seront supprimées (sous le joueur)
+        float deleteThresholdY = player.position.y - 15f;
+
+        // Parcourir la liste des plateformes et les supprimer si elles sont sous le seuil
+        for (int i = platforms.Count - 1; i >= 0; i--)
+        {
+            // Vérifier si la plateforme est toujours valide avant de la détruire
+            if (platforms[i] != null && platforms[i].transform.position.y < deleteThresholdY)
+            {
+                Destroy(platforms[i]);
+                platforms.RemoveAt(i); // Enlever de la liste après destruction
+                //Debug.Log("detruit");
+            }
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    GameObject ChoosePlatform()
     {
-        
+        float randomValue = Random.Range(0f, 1f);
+
+        if (randomValue < 0.6f)
+        {
+            return GreenPlatformPrefab;
+        }
+        else if (randomValue < 0.7f)
+        {
+            return BluePlatformPrefab;
+        }
+        else if (randomValue < 0.9f)
+        {
+            return BrownPlatformPrefab;
+        }
+        else
+        {
+            return WhitePlatformPrefab;
+        }
     }
 }

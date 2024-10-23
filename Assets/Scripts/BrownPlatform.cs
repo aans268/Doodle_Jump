@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BrownPlatform : MonoBehaviour
 {
-    
+    private Collider platformCollider;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -13,9 +13,7 @@ public class BrownPlatform : MonoBehaviour
             Rigidbody2D rb= collision.gameObject.GetComponent<Rigidbody2D>();
             if(rb!=null)
             {
-                //Vector2 velocity= rb.velocity;
-                //velocity.y=jumpForce;
-                //rb.velocity=velocity;
+                //platformCollider.enabled = false;
                 Destroy(gameObject);
             }
         }
@@ -24,7 +22,7 @@ public class BrownPlatform : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        platformCollider = GetComponent<Collider>();
     }
 
     // Update is called once per frame

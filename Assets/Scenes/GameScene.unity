@@ -516,7 +516,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0053251237, y: -0.20945452}
+  m_Offset: {x: -0.011560246, y: -0.27804077}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -527,7 +527,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.33954397, y: 0.23079208}
+  m_Size: {x: 0.48918667, y: 0.3679645}
   m_EdgeRadius: 0
 --- !u!212 &621869622
 SpriteRenderer:
@@ -1141,7 +1141,9 @@ MonoBehaviour:
   BluePlatformPrefab: {fileID: 2098712699}
   BrownPlatformPrefab: {fileID: 1453849303}
   WhitePlatformPrefab: {fileID: 1354016264}
-  platformCount: 300
+  player: {fileID: 621869623}
+  initialPlatformCount: 100
+  minPlatformCount: 20
 --- !u!4 &1868503539
 Transform:
   m_ObjectHideFlags: 0
@@ -1398,13 +1400,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f08533fe6bb7e4ebd350d9c0b9aaef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GreenPlatformPrefab: {fileID: 21338878}
-  BluePlatformPrefab: {fileID: 2098712699}
-  BrownPlatformPrefab: {fileID: 1453849303}
-  WhitePlatformPrefab: {fileID: 1354016264}
-  initialPlatformCount: 10
-  initialYSpacing: 0.7
-  maxYSpacing: 1.5
 --- !u!4 &2051573137
 Transform:
   m_ObjectHideFlags: 0
@@ -1514,6 +1509,10 @@ PrefabInstance:
       value: BrownPlatform
       objectReference: {fileID: 0}
     - target: {fileID: 8278545453207278326, guid: c696b2290bd01ef4f8dffdaa9252ba10, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8278545453207278326, guid: c696b2290bd01ef4f8dffdaa9252ba10, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.09
       objectReference: {fileID: 0}
@@ -1575,6 +1574,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4742065956097642659, guid: 4819c5a586d119147ba8658cb76f6396, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4
+      objectReference: {fileID: 0}
     - target: {fileID: 4742065956097642659, guid: 4819c5a586d119147ba8658cb76f6396, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.01
@@ -1641,6 +1644,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2480087525809959188, guid: 9c9624cfdc50b2d4793414125174b30c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4
+      objectReference: {fileID: 0}
     - target: {fileID: 2480087525809959188, guid: 9c9624cfdc50b2d4793414125174b30c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.027872935
@@ -1757,7 +1764,7 @@ PrefabInstance:
     - target: {fileID: 4048434562396452056, guid: 89a502f6d1104c744b3c5438ae77df9c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: c7f5cbdd380089e4283725eba8f5b1c8, type: 3}
+      objectReference: {fileID: 21300000, guid: a1f7301de09f2aa4aa4b75285e6542c7, type: 3}
     - target: {fileID: 4048434562396452056, guid: 89a502f6d1104c744b3c5438ae77df9c, type: 3}
       propertyPath: m_SortingLayer
       value: -2
@@ -1786,6 +1793,10 @@ PrefabInstance:
     - target: {fileID: 2563825103903497026, guid: d29cb856bfb76824fa0029a2c64bd3f5, type: 3}
       propertyPath: m_Name
       value: BluePlatform
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651922903858511689, guid: d29cb856bfb76824fa0029a2c64bd3f5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 5651922903858511689, guid: d29cb856bfb76824fa0029a2c64bd3f5, type: 3}
       propertyPath: m_LocalPosition.x

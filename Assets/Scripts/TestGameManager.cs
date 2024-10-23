@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TestGameManager : MonoBehaviour
 {
+    /*
     public GameObject GreenPlatformPrefab;
     public GameObject BluePlatformPrefab;
     public GameObject BrownPlatformPrefab;
@@ -114,4 +115,5 @@ public class TestGameManager : MonoBehaviour
             }
         }
     }
+    */
 }
