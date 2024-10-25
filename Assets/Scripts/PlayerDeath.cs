@@ -6,21 +6,34 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
-    public float deathTreshold = -10f;
     public GameObject gameOverUI;
+    private float lowestVisibleY; // Position la plus basse visible de la caméra
+    private Collider2D playerCollider; // Collider du joueur
 
 
-    private bool isDead = false;
     // Update is called once per frame
 
     void Start()
     {
         gameOverUI.SetActive(false);
+        playerCollider = GetComponent<Collider2D>(); // Assurer que le joueur a un Collider2D
+
     }
     void Update()
     {
+        CheckIfOutOfView();
+    }
 
-        if (transform.position.y < deathTreshold && !isDead)
+
+    void CheckIfOutOfView()
+    {
+        // Calculer la limite inférieure de la caméra visible
+        lowestVisibleY = Camera.main.transform.position.y - Camera.main.orthographicSize;
+        float playerBottomY = transform.position.y - playerCollider.bounds.extents.y;
+
+
+        // Vérifier si le joueur est sous la limite visible (uniquement par le bas)
+        if (playerBottomY < lowestVisibleY)
         {
             Die();
         }
@@ -28,8 +41,8 @@ public class PlayerDeath : MonoBehaviour
 
     void Die()
     {
-        isDead = true;
-        Debug.Log("Le joueur est mort !");
+        gameObject.SetActive(false);
+
 
         if (gameOverUI != null)
         {
@@ -44,4 +57,11 @@ public class PlayerDeath : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    // void Die()
+    // {
+    //     SceneManager.LoadScene("DieScene", LoadSceneMode.Single);
+    //     GameManager.Instance.SpawnPlayer(transform.position);
+
+    // }
 }

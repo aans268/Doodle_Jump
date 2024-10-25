@@ -23,6 +23,24 @@ public class GameManager : MonoBehaviour
 
     // Liste pour stocker les plateformes générées
     private List<GameObject> platforms = new List<GameObject>();
+    public GameObject playerPrefab; // Préfabriqué du joueur
+    public static GameManager Instance; // Instance unique du GameManager
+
+
+
+    void Awake()
+    {
+        // Assurez-vous qu'il n'y a qu'une seule instance
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Ne pas détruire lors du changement de scène
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -75,8 +93,10 @@ public class GameManager : MonoBehaviour
 
     void RemovePassedPlatforms()
     {
+        float lowestVisibleY = Camera.main.transform.position.y - Camera.main.orthographicSize;
+
         // Limite sous laquelle les plateformes seront supprimées (sous le joueur)
-        float deleteThresholdY = player.position.y - 15f;
+        float deleteThresholdY = lowestVisibleY - 0.6f; // Utiliser la position de la caméra
 
         // Parcourir la liste des plateformes et les supprimer si elles sont sous le seuil
         for (int i = platforms.Count - 1; i >= 0; i--)
@@ -112,5 +132,9 @@ public class GameManager : MonoBehaviour
         {
             return WhitePlatformPrefab;
         }
+    }
+    public void SpawnPlayer(Vector3 position)
+    {
+        GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
     }
 }
