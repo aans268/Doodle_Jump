@@ -23,24 +23,6 @@ public class GameManager : MonoBehaviour
 
     // Liste pour stocker les plateformes générées
     private List<GameObject> platforms = new List<GameObject>();
-    public GameObject playerPrefab; // Préfabriqué du joueur
-    public static GameManager Instance; // Instance unique du GameManager
-
-
-
-    void Awake()
-    {
-        // Assurez-vous qu'il n'y a qu'une seule instance
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Ne pas détruire lors du changement de scène
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     void Start()
     {
@@ -132,9 +114,5 @@ public class GameManager : MonoBehaviour
         {
             return WhitePlatformPrefab;
         }
-    }
-    public void SpawnPlayer(Vector3 position)
-    {
-        GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
     }
 }

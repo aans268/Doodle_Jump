@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerDeath.cs" />
+    <Compile Include="Assets\Scripts\QuitGame.cs" />
     <Compile Include="Assets\Scripts\FondInfini.cs" />
     <Compile Include="Assets\Scripts\TestGameManager.cs" />
     <Compile Include="Assets\Scripts\BrownPlatform.cs" />
