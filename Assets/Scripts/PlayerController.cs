@@ -12,6 +12,11 @@ public class PlayerController : MonoBehaviour
     public Sprite spriteGauche;
     public Sprite spriteDroite;
 
+    public GameObject projectilePrefab; // Associe ici le prefab du projectile
+    public float projectileSpeed;
+
+
+
     // Limites du terrain
     private float minX = -3f;
     private float maxX = 3f;
@@ -42,6 +47,11 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.sprite =spriteDroite;
         }
 
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            FireProjectile();
+        }
+
     }
 
     private void FixedUpdate()
@@ -63,6 +73,21 @@ public class PlayerController : MonoBehaviour
         }
 
 
+    }
+
+
+    void FireProjectile()
+    {
+        // Crée le projectile à la position du joueur
+         if (projectilePrefab != null)
+        {
+            // Instancie un nouveau projectile
+            /*GameObject projectile =*/ Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            // Ajoute une vitesse au projectile pour qu'il se déplace vers le haut
+            //Rigidbody2D projRb = projectile.GetComponent<Rigidbody2D>();
+            //projRb.velocity = Vector2.up * projectileSpeed;
+        }
+        
     }
 
 
