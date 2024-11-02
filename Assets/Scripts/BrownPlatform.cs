@@ -20,31 +20,44 @@ public class BrownPlatform : MonoBehaviour
         }
     }
     */
+    public Animator animator;  // Référence à l'Animator de l'objet
+    public float animationDuration = 1f; // Durée de l'animation en secondes
+    private bool hasAnimated = false; // Pour suivre si l'animation a déjà été jouée
 
 
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        // Vérifie si l'objet qui entre en collision est le joueur
-        if (collider.CompareTag("Player"))
-        {
-            // Vérifie si le joueur tombe sur la plateforme
-            if (collider.GetComponent<Rigidbody2D>().velocity.y < 0) // Le joueur doit tomber
-            {
-                // Détruit la plateforme
-                Destroy(gameObject);
-            }
-        }
-    }
 
-    // Start is called before the first frame update
     void Start()
     {
+        // Désactiver l'animation par défaut
+        animator.SetBool("isActivated", false);
         platformCollider = GetComponent<Collider>();
+        hasAnimated = false; // Réinitialiser l'état d'animation
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        
+        // Vérifier si le collider qui entre en contact est celui du joueur
+        if (collider.GetComponent<Rigidbody2D>().velocity.y < 0) // Le joueur doit tomber
+            {
+                if (collider.CompareTag("Player") && !hasAnimated)
+                {
+                    // Activer l'animation
+                    animator.SetBool("isActivated", true);
+                    hasAnimated = true; // Marquer que l'animation a été jouée
+                    StartCoroutine(HandleAnimationEnd());
+                }
+            }
     }
+
+
+    IEnumerator HandleAnimationEnd()
+    {
+        // Attendre la durée de l'animation
+        yield return new WaitForSeconds(animationDuration);
+
+        Destroy(gameObject);
+    }
+
+        
+
 }
