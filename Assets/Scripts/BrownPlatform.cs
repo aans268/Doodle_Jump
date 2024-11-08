@@ -23,6 +23,8 @@ public class BrownPlatform : MonoBehaviour
     public Animator animator;  // Référence à l'Animator de l'objet
     public float animationDuration = 1f; // Durée de l'animation en secondes
     private bool hasAnimated = false; // Pour suivre si l'animation a déjà été jouée
+    private Rigidbody2D rb;
+
 
 
 
@@ -32,6 +34,8 @@ public class BrownPlatform : MonoBehaviour
         animator.SetBool("isActivated", false);
         platformCollider = GetComponent<Collider>();
         hasAnimated = false; // Réinitialiser l'état d'animation
+        rb = GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -45,6 +49,7 @@ public class BrownPlatform : MonoBehaviour
                     animator.SetBool("isActivated", true);
                     hasAnimated = true; // Marquer que l'animation a été jouée
                     StartCoroutine(HandleAnimationEnd());
+                    rb.bodyType = RigidbodyType2D.Dynamic;
                 }
             }
     }
