@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class PlayerController : MonoBehaviour
 
     public GameObject projectilePrefab; // Associe ici le prefab du projectile
     public float projectileSpeed;
+
+    public GameObject gameOverUI;
+
 
 
 
@@ -76,6 +80,32 @@ public class PlayerController : MonoBehaviour
     }
 
 
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Vérifier si le joueur touche un monstre
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Vector2 contactPoint = collision.contacts[0].point;
+            Vector2 center = collision.collider.bounds.center;
+
+            // Si le joueur touche le monstre par le dessus
+            if (contactPoint.y > center.y)
+            {
+                // Le joueur rebondit et le monstre est détruit
+                rb.velocity = new Vector2(rb.velocity.x, 10f); // Appliquer le rebond
+                Destroy(collision.gameObject); // Détruire le monstre
+            }
+            else
+            {
+                // Si le joueur touche le monstre par les côtés ou par le dessous, il meurt
+                Die();
+            }
+        }
+    }
+
+
+
     void FireProjectile()
     {
         // Crée le projectile à la position du joueur
@@ -90,6 +120,25 @@ public class PlayerController : MonoBehaviour
         
     }
 
+
+    void Die()
+    {
+        gameObject.SetActive(false);
+
+
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(true);
+        }
+
+        Invoke("RestartGame", 2f);
+
+    }
+
+    void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
 
 }

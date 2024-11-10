@@ -9,6 +9,12 @@ public class GameManager : MonoBehaviour
     public GameObject BrownPlatformPrefab;
     public GameObject WhitePlatformPrefab;
 
+    public GameObject Monster1Prefab;
+
+    public GameObject Monster2Prefab;
+
+    public GameObject Monster3Prefab;
+
     public Transform player; // Référence au joueur
     public int initialPlatformCount = 100;
     public int minPlatformCount = 20;
@@ -57,6 +63,11 @@ public class GameManager : MonoBehaviour
 
             // Ajouter la plateforme à la liste
             platforms.Add(newPlatform);
+
+            if (Random.value < 0.05f) // 10% de chance d'ajouter un monstre
+            {
+                GenerateMonster(spawnPosition);
+            }
         }
 
         // Mettre à jour la position de la dernière plateforme générée
@@ -115,4 +126,44 @@ public class GameManager : MonoBehaviour
             return WhitePlatformPrefab;
         }
     }
+
+
+    void GenerateMonster(Vector3 platformPosition)
+{
+    // Choisir un monstre avec une probabilité égale
+    GameObject monsterToSpawn = ChooseMonster();
+
+    // Positionner le monstre légèrement au-dessus de la plateforme
+    Vector3 monsterPosition = new Vector3(0, platformPosition.y + 0.5f, platformPosition.z);
+
+    // Vérifier si la plateforme et le monstre se superposent trop sur l'axe Y
+    // Si la plateforme est trop proche du monstre, ajuster la position
+    if (Mathf.Abs(monsterPosition.y - platformPosition.y) < 0.6f)
+    {
+        monsterPosition.y += 0.6f; // Déplacer le monstre au-dessus de la plateforme
+    }
+
+    // Instancier le monstre à la nouvelle position
+    Instantiate(monsterToSpawn, monsterPosition, Quaternion.identity);
+}
+
+    GameObject ChooseMonster()
+    {
+        float randomValue = Random.Range(0f, 1f);
+
+        if (randomValue < 0.33f)
+        {
+            return Monster1Prefab;
+        }
+        else if (randomValue < 0.66f)
+        {
+            return Monster2Prefab;
+        }
+        else
+        {
+            return Monster3Prefab;
+        }
+    }
+
+
 }
