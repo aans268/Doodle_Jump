@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // Préfabriqués des plateformes
     public GameObject GreenPlatformPrefab;
     public GameObject BluePlatformPrefab;
     public GameObject BrownPlatformPrefab;
     public GameObject WhitePlatformPrefab;
 
+    // Préfabriqués des monstres
     public GameObject Monster1Prefab;
-
     public GameObject Monster2Prefab;
-
     public GameObject Monster3Prefab;
 
-    public Transform player; // Référence au joueur
+    // Préfabriqué du trou
+    public GameObject HolePrefab;  // Ajouter le prefab du trou ici
+
+    // Référence au joueur
+    public Transform player; 
     public int initialPlatformCount = 100;
     public int minPlatformCount = 20;
+
+    // Probabilités
+    public float monsterProb = 0.05f;
+    public float holeProb = 0.01f;  // Probabilité d'apparition du trou
 
     private float minSpacing = 0.5f;
     private float maxSpacing = 1.5f;
@@ -64,9 +72,15 @@ public class GameManager : MonoBehaviour
             // Ajouter la plateforme à la liste
             platforms.Add(newPlatform);
 
-            if (Random.value < 0.05f) // 10% de chance d'ajouter un monstre
+            if (Random.value < monsterProb) // % de chance d'ajouter un monstre
             {
                 GenerateMonster(spawnPosition);
+            }
+
+            // Vérifier si un trou doit apparaître
+            if (Random.value < holeProb) // % de chance d'ajouter un trou
+            {
+                GenerateHole(spawnPosition);  // Appeler la méthode pour générer un trou
             }
         }
 
@@ -99,11 +113,9 @@ public class GameManager : MonoBehaviour
             {
                 Destroy(platforms[i]);
                 platforms.RemoveAt(i); // Enlever de la liste après destruction
-                //Debug.Log("detruit");
             }
         }
     }
-
 
     GameObject ChoosePlatform()
     {
@@ -127,25 +139,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     void GenerateMonster(Vector3 platformPosition)
-{
-    // Choisir un monstre avec une probabilité égale
-    GameObject monsterToSpawn = ChooseMonster();
-
-    // Positionner le monstre légèrement au-dessus de la plateforme
-    Vector3 monsterPosition = new Vector3(0, platformPosition.y + 0.5f, platformPosition.z);
-
-    // Vérifier si la plateforme et le monstre se superposent trop sur l'axe Y
-    // Si la plateforme est trop proche du monstre, ajuster la position
-    if (Mathf.Abs(monsterPosition.y - platformPosition.y) < 0.6f)
     {
-        monsterPosition.y += 0.6f; // Déplacer le monstre au-dessus de la plateforme
-    }
+        // Choisir un monstre avec une probabilité égale
+        GameObject monsterToSpawn = ChooseMonster();
 
-    // Instancier le monstre à la nouvelle position
-    Instantiate(monsterToSpawn, monsterPosition, Quaternion.identity);
-}
+        // Positionner le monstre légèrement au-dessus de la plateforme
+        Vector3 monsterPosition = new Vector3(0, platformPosition.y + 0.5f, platformPosition.z);
+
+        // Vérifier si la plateforme et le monstre se superposent trop sur l'axe Y
+        if (Mathf.Abs(monsterPosition.y - platformPosition.y) < 0.6f)
+        {
+            monsterPosition.y += 0.6f; // Déplacer le monstre au-dessus de la plateforme
+        }
+
+        // Instancier le monstre à la nouvelle position
+        Instantiate(monsterToSpawn, monsterPosition, Quaternion.identity);
+    }
 
     GameObject ChooseMonster()
     {
@@ -165,5 +175,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    // Méthode pour générer un trou à une position donnée
+    void GenerateHole(Vector3 platformPosition)
+    {
+        // Instancier le trou à la position de la plateforme
+        Instantiate(HolePrefab, platformPosition, Quaternion.identity);
+    }
 }

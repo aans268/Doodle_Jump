@@ -19,12 +19,13 @@ public class Projectile : MonoBehaviour
         // Déplacer le projectile vers le haut
         transform.Translate(Vector2.up * speed * Time.deltaTime);
     }
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Destroy(gameObject);
             Destroy(collision.gameObject); // Détruit l'ennemi ou applique des dégâts
+            //Debug.Log("touché");
         }
     }
 }

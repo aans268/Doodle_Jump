@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public float bounceForce=10f;
     public float moveSpeed= 10f;
     public Rigidbody2D rb;
     private float moveX;
@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
             if (contactPoint.y > center.y)
             {
                 // Le joueur rebondit et le monstre est détruit
-                rb.velocity = new Vector2(rb.velocity.x, 10f); // Appliquer le rebond
+                rb.velocity = new Vector2(rb.velocity.x, bounceForce); // Appliquer le rebond
                 Destroy(collision.gameObject); // Détruire le monstre
             }
             else
