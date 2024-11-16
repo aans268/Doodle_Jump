@@ -4,56 +4,52 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Préfabriqués des plateformes
     public GameObject GreenPlatformPrefab;
     public GameObject BluePlatformPrefab;
     public GameObject BrownPlatformPrefab;
     public GameObject WhitePlatformPrefab;
 
-    // Préfabriqués des monstres
     public GameObject Monster1Prefab;
     public GameObject Monster2Prefab;
     public GameObject Monster3Prefab;
 
-    // Préfabriqué du trou
-    public GameObject HolePrefab;  // Ajouter le prefab du trou ici
+    public GameObject HolePrefab;
 
-    // Référence au joueur
-    public Transform player; 
+    public Transform player;
     public int initialPlatformCount = 100;
     public int minPlatformCount = 20;
 
-    // Probabilités
     public float monsterProb = 0.05f;
-    public float holeProb = 0.01f;  // Probabilité d'apparition du trou
+    public float holeProb = 0.01f;
 
     private float minSpacing = 0.5f;
     private float maxSpacing = 1.5f;
     private float minX = -2.7f;
     private float maxX = 2.7f;
 
-    private Vector3 lastPlatformPosition;
-    private int currentPlatformCount;
+    private float jumpHeight = 2.3f; // Hauteur maximale de saut du joueur
+    private float safeZoneRadius = 3f; // Rayon sécurisé autour du joueur
 
-    // Liste pour stocker les plateformes générées
+    private Vector3 lastPlatformPosition;
+    private List<Vector3> holePositions = new List<Vector3>();
+    private List<Vector3> monsterPositions = new List<Vector3>();
     private List<GameObject> platforms = new List<GameObject>();
+
+    private int currentPlatformCount;
 
     void Start()
     {
         currentPlatformCount = initialPlatformCount;
-        lastPlatformPosition = new Vector3(0, 0, 0); // Initialiser la position
+        lastPlatformPosition = new Vector3(0, 0, 0);
         GeneratePlatformBatch();
     }
 
     void Update()
     {
-        // Vérifier si le joueur est proche de la dernière plateforme
         if (player.position.y > lastPlatformPosition.y - 10f)
         {
             GeneratePlatformBatch();
         }
-
-        // Supprimer les plateformes qui sont trop loin sous le joueur
         RemovePassedPlatforms();
     }
 
@@ -61,72 +57,98 @@ public class GameManager : MonoBehaviour
     {
         Vector3 spawnPosition = lastPlatformPosition;
 
+        // Étape 1 : Générer les trous et les monstres
         for (int i = 0; i < currentPlatformCount; i++)
         {
-            spawnPosition.y += Random.Range(minSpacing, maxSpacing);
+            spawnPosition.y += Random.Range(minSpacing, Mathf.Min(maxSpacing, jumpHeight));
             spawnPosition.x = Random.Range(minX, maxX);
 
-            GameObject platformToSpawn = ChoosePlatform();
-            GameObject newPlatform = Instantiate(platformToSpawn, spawnPosition, Quaternion.identity);
+            // Vérifier si la position est dans la zone sécurisée autour du joueur pour les monstres et les trous
+            if (Vector3.Distance(spawnPosition, player.position) < safeZoneRadius)
+            {
+                i--; // Re-tenter la génération si la position est trop proche du joueur
+                continue;
+            }
 
-            // Ajouter la plateforme à la liste
-            platforms.Add(newPlatform);
-
-            if (Random.value < monsterProb) // % de chance d'ajouter un monstre
+            if (Random.value < holeProb)
+            {
+                GenerateHole(spawnPosition);
+            }
+            else if (Random.value < monsterProb)
             {
                 GenerateMonster(spawnPosition);
             }
-
-            // Vérifier si un trou doit apparaître
-            if (Random.value < holeProb) // % de chance d'ajouter un trou
-            {
-                GenerateHole(spawnPosition);  // Appeler la méthode pour générer un trou
-            }
         }
 
-        // Mettre à jour la position de la dernière plateforme générée
+        // Étape 2 : Générer les plateformes en évitant les trous et les monstres
+        spawnPosition = lastPlatformPosition;
+        bool hasNonBrownPlatform = false; // Variable pour s'assurer qu'il y ait toujours une plateforme non-marron
+
+        for (int i = 0; i < currentPlatformCount; i++)
+        {
+            spawnPosition.y += Random.Range(minSpacing, Mathf.Min(maxSpacing, jumpHeight));
+            spawnPosition.x = Random.Range(minX, maxX);
+
+            // Vérifier que la position n'est pas sur un trou ou un monstre
+            if (IsOverHole(spawnPosition) || IsOverMonster(spawnPosition))
+            {
+                i--; // Re-tenter la génération pour ce cycle
+                continue;
+            }
+
+            // Ne pas utiliser le safeZoneRadius pour la vérification des plateformes, car elles doivent être accessibles
+            GameObject platformToSpawn = ChoosePlatform(ref hasNonBrownPlatform); // Passer la référence pour savoir si une plateforme non-marron a été générée
+            GameObject newPlatform = Instantiate(platformToSpawn, spawnPosition, Quaternion.identity);
+
+            platforms.Add(newPlatform);
+        }
+
+        // Si aucune plateforme non-marron n'a été générée, en forcer une avant de terminer la génération
+        if (!hasNonBrownPlatform)
+        {
+            Vector3 fallbackPosition = spawnPosition;
+            fallbackPosition.y += jumpHeight; // S'assurer que la plateforme est à une hauteur où le joueur peut sauter
+            GameObject platformToSpawn = ChoosePlatform(ref hasNonBrownPlatform);
+            Instantiate(platformToSpawn, fallbackPosition, Quaternion.identity);
+        }
+
         lastPlatformPosition = spawnPosition;
 
-        // Réduire le nombre de plateformes générées par batch
         if (currentPlatformCount > minPlatformCount)
         {
             currentPlatformCount--;
         }
 
-        // Augmenter l'espacement entre les plateformes pour la difficulté
         minSpacing += 0.1f;
         maxSpacing += 0.1f;
     }
 
     void RemovePassedPlatforms()
     {
-        float lowestVisibleY = Camera.main.transform.position.y - Camera.main.orthographicSize;
+        float deleteThresholdY = Camera.main.transform.position.y - Camera.main.orthographicSize - 5f;
 
-        // Limite sous laquelle les plateformes seront supprimées (sous le joueur)
-        float deleteThresholdY = lowestVisibleY - 0.6f; // Utiliser la position de la caméra
-
-        // Parcourir la liste des plateformes et les supprimer si elles sont sous le seuil
         for (int i = platforms.Count - 1; i >= 0; i--)
         {
-            // Vérifier si la plateforme est toujours valide avant de la détruire
             if (platforms[i] != null && platforms[i].transform.position.y < deleteThresholdY)
             {
                 Destroy(platforms[i]);
-                platforms.RemoveAt(i); // Enlever de la liste après destruction
+                platforms.RemoveAt(i);
             }
         }
     }
 
-    GameObject ChoosePlatform()
+    GameObject ChoosePlatform(ref bool hasNonBrownPlatform)
     {
         float randomValue = Random.Range(0f, 1f);
 
         if (randomValue < 0.6f)
         {
+            hasNonBrownPlatform = true; // Une plateforme non-marron est générée
             return GreenPlatformPrefab;
         }
         else if (randomValue < 0.7f)
         {
+            hasNonBrownPlatform = true; // Une plateforme non-marron est générée
             return BluePlatformPrefab;
         }
         else if (randomValue < 0.9f)
@@ -135,26 +157,16 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            hasNonBrownPlatform = true; // Une plateforme non-marron est générée
             return WhitePlatformPrefab;
         }
     }
 
-    void GenerateMonster(Vector3 platformPosition)
+    void GenerateMonster(Vector3 position)
     {
-        // Choisir un monstre avec une probabilité égale
         GameObject monsterToSpawn = ChooseMonster();
-
-        // Positionner le monstre légèrement au-dessus de la plateforme
-        Vector3 monsterPosition = new Vector3(0, platformPosition.y + 0.5f, platformPosition.z);
-
-        // Vérifier si la plateforme et le monstre se superposent trop sur l'axe Y
-        if (Mathf.Abs(monsterPosition.y - platformPosition.y) < 0.6f)
-        {
-            monsterPosition.y += 0.6f; // Déplacer le monstre au-dessus de la plateforme
-        }
-
-        // Instancier le monstre à la nouvelle position
-        Instantiate(monsterToSpawn, monsterPosition, Quaternion.identity);
+        monsterPositions.Add(position);
+        Instantiate(monsterToSpawn, position, Quaternion.identity);
     }
 
     GameObject ChooseMonster()
@@ -175,10 +187,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Méthode pour générer un trou à une position donnée
-    void GenerateHole(Vector3 platformPosition)
+    void GenerateHole(Vector3 position)
     {
-        // Instancier le trou à la position de la plateforme
-        Instantiate(HolePrefab, platformPosition, Quaternion.identity);
+        holePositions.Add(position);
+        Instantiate(HolePrefab, position, Quaternion.identity);
+    }
+
+    bool IsOverHole(Vector3 position)
+    {
+        foreach (Vector3 hole in holePositions)
+        {
+            if (Vector3.Distance(position, hole) < 1f) // Ajuste le seuil selon la taille du trou
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool IsOverMonster(Vector3 position)
+    {
+        foreach (Vector3 monster in monsterPositions)
+        {
+            if (Vector3.Distance(position, monster) < 1f) // Ajuste le seuil selon la taille des monstres
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

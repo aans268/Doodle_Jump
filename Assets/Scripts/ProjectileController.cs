@@ -25,7 +25,7 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
             Destroy(collision.gameObject); // Détruit l'ennemi ou applique des dégâts
-            //Debug.Log("touché");
+            Debug.Log("touché");
         }
     }
 }

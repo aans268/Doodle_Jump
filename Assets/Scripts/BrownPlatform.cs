@@ -40,19 +40,21 @@ public class BrownPlatform : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        // Vérifier si le collider qui entre en contact est celui du joueur
-        if (collider.GetComponent<Rigidbody2D>().velocity.y < 0) // Le joueur doit tomber
+        // Vérifier si le collider a un Rigidbody2D et si la vitesse sur l'axe Y est négative
+        Rigidbody2D rb2D = collider.GetComponent<Rigidbody2D>();
+        if (rb2D != null && rb2D.velocity.y < 0) // Le joueur doit tomber
+        {
+            if (collider.CompareTag("Player") && !hasAnimated)
             {
-                if (collider.CompareTag("Player") && !hasAnimated)
-                {
-                    // Activer l'animation
-                    animator.SetBool("isActivated", true);
-                    hasAnimated = true; // Marquer que l'animation a été jouée
-                    StartCoroutine(HandleAnimationEnd());
-                    rb.bodyType = RigidbodyType2D.Dynamic;
-                }
+                // Activer l'animation
+                animator.SetBool("isActivated", true);
+                hasAnimated = true; // Marquer que l'animation a été jouée
+                StartCoroutine(HandleAnimationEnd());
+                rb.bodyType = RigidbodyType2D.Dynamic;
             }
+        }
     }
+
 
 
     IEnumerator HandleAnimationEnd()
