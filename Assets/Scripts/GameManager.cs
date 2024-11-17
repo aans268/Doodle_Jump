@@ -22,13 +22,13 @@ public class GameManager : MonoBehaviour
     public float monsterProb = 0.05f;
     public float holeProb = 0.01f;
 
-    private float minSpacing = 0.5f;
-    private float maxSpacing = 1.5f;
+    private float minSpacing = 0.2f;
+    private float maxSpacing = 0.7f;
     private float minX = -2.7f;
     private float maxX = 2.7f;
 
-    private float jumpHeight = 2.3f; // Hauteur maximale de saut du joueur
-    private float safeZoneRadius = 3f; // Rayon sécurisé autour du joueur
+    private float jumpHeight = 2f; // Hauteur maximale de saut du joueur
+    private float safeZoneRadius = 5f; // Rayon sécurisé autour du joueur
 
     private Vector3 lastPlatformPosition;
     private List<Vector3> holePositions = new List<Vector3>();
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 
         // Étape 2 : Générer les plateformes en évitant les trous et les monstres
         spawnPosition = lastPlatformPosition;
-        bool hasNonBrownPlatform = false; // Variable pour s'assurer qu'il y ait toujours une plateforme non-marron
+        bool hasNonBrownPlatform = false; // Variable pour vérifier si une plateforme non-marron a été générée
 
         for (int i = 0; i < currentPlatformCount; i++)
         {
@@ -96,32 +96,76 @@ public class GameManager : MonoBehaviour
                 continue;
             }
 
-            // Ne pas utiliser le safeZoneRadius pour la vérification des plateformes, car elles doivent être accessibles
-            GameObject platformToSpawn = ChoosePlatform(ref hasNonBrownPlatform); // Passer la référence pour savoir si une plateforme non-marron a été générée
-            GameObject newPlatform = Instantiate(platformToSpawn, spawnPosition, Quaternion.identity);
+            // Vérifier si cette plateforme doit être non marron
+            GameObject platformToSpawn = ChoosePlatform(ref hasNonBrownPlatform); // Passer la référence pour choisir une plateforme
 
+            GameObject newPlatform = Instantiate(platformToSpawn, spawnPosition, Quaternion.identity);
             platforms.Add(newPlatform);
+
+            // Si cette plateforme est non marron, confirmer qu'elle est accessible à hauteur de saut
+            if (!IsBrownPlatform(platformToSpawn) && IsWithinJumpHeight(lastPlatformPosition, spawnPosition))
+            {
+                hasNonBrownPlatform = true;
+            }
         }
 
-        // Si aucune plateforme non-marron n'a été générée, en forcer une avant de terminer la génération
+        // Étape 3 : Forcer une plateforme non marron accessible si aucune n'a été générée
         if (!hasNonBrownPlatform)
         {
+            // Réinitialiser la position pour s'assurer qu'une plateforme non marron soit ajoutée
             Vector3 fallbackPosition = spawnPosition;
-            fallbackPosition.y += jumpHeight; // S'assurer que la plateforme est à une hauteur où le joueur peut sauter
-            GameObject platformToSpawn = ChoosePlatform(ref hasNonBrownPlatform);
-            Instantiate(platformToSpawn, fallbackPosition, Quaternion.identity);
+            fallbackPosition.y += Random.Range(minSpacing, Mathf.Min(maxSpacing, jumpHeight));
+            fallbackPosition.x = Random.Range(minX, maxX);
+
+            // Placer une plateforme non marron
+            GameObject nonBrownPlatform = ChooseNonBrownPlatform();
+            Instantiate(nonBrownPlatform, fallbackPosition, Quaternion.identity);
         }
 
         lastPlatformPosition = spawnPosition;
 
+        // Réduire le nombre de plateformes si nécessaire
         if (currentPlatformCount > minPlatformCount)
         {
             currentPlatformCount--;
         }
 
-        minSpacing += 0.1f;
-        maxSpacing += 0.1f;
+        // Ajuster l'espacement minimum et maximum
+        minSpacing += 0.05f;
+        if (maxSpacing < jumpHeight)
+        {
+            maxSpacing += 0.1f;
+        }
     }
+
+    GameObject ChooseNonBrownPlatform()
+    {
+        // Créer une liste des plateformes non marron
+        List<GameObject> nonBrownPlatforms = new List<GameObject> 
+        {
+            GreenPlatformPrefab,
+            BluePlatformPrefab,
+            WhitePlatformPrefab
+        };
+
+        // Choisir une plateforme non marron aléatoire
+        return nonBrownPlatforms[Random.Range(0, nonBrownPlatforms.Count)];
+    }
+
+
+    bool IsBrownPlatform(GameObject platform)
+    {
+        // Remplacez "BrownPlatform" par le nom de votre prefab marron
+        return platform.name.Contains("BrownPlatform");
+    }
+
+    bool IsWithinJumpHeight(Vector3 lastPosition, Vector3 currentPosition)
+    {
+        return Mathf.Abs(currentPosition.y - lastPosition.y) <= jumpHeight;
+    }
+
+
+
 
     void RemovePassedPlatforms()
     {
@@ -172,6 +216,10 @@ public class GameManager : MonoBehaviour
     GameObject ChooseMonster()
     {
         float randomValue = Random.Range(0f, 1f);
+
+        Monster1Prefab = Resources.Load<GameObject>("Monster Blue");
+        Monster2Prefab = Resources.Load<GameObject>("Monster Green");
+        Monster3Prefab = Resources.Load<GameObject>("Monster Purple");
 
         if (randomValue < 0.33f)
         {

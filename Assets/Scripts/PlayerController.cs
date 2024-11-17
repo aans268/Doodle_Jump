@@ -37,6 +37,17 @@ public class PlayerController : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         cannonObject.SetActive(false); // Le canon est désactivé par défaut
+        if (projectilePrefab == null)
+        {
+            Debug.Log("oe");
+            // Tente de le réassigner depuis les ressources si manquant
+            projectilePrefab = Resources.Load<GameObject>("Projectile");
+
+            if (projectilePrefab == null)
+            {
+                Debug.LogError("Le prefab du projectile est toujours manquant !");
+            }
+        }
     }
 
     // Update is called once per frame
@@ -143,10 +154,12 @@ public class PlayerController : MonoBehaviour
     void FireProjectile()
     {
         // Crée le projectile à la position du joueur
-        if (projectilePrefab != null)
+        if (!(projectilePrefab != null))
         {
-            Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            projectilePrefab = Resources.Load<GameObject>("Projectile 1");
         }
+        Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+
     }
 
     void Die()
