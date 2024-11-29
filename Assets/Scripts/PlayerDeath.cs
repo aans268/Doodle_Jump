@@ -49,19 +49,15 @@ public class PlayerDeath : MonoBehaviour
             gameOverUI.SetActive(true);
         }
 
-        Invoke("RestartGame", 2f);
+        Invoke("StartDeath", 2f);
 
     }
 
-    void RestartGame()
+    public void StartDeath()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        SceneManager.LoadScene("DieScene");
     }
 
-    // void Die()
-    // {
-    //     SceneManager.LoadScene("DieScene", LoadSceneMode.Single);
-    //     GameManager.Instance.SpawnPlayer(transform.position);
-
-    // }
+    
 }

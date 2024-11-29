@@ -31,12 +31,12 @@ public class HoleController : MonoBehaviour
         }
 
         // Redémarre le jeu après 2 secondes
-        Invoke("RestartGame", 2f);
+        Invoke("StartDeath", 2f);
     }
 
-    void RestartGame()
+    public void StartDeath()
     {
-        // Redémarre la scène actuelle
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        SceneManager.LoadScene("DieScene");
     }
 }

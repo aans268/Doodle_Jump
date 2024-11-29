@@ -166,16 +166,19 @@ public class PlayerController : MonoBehaviour
     {
         gameObject.SetActive(false);
 
+
         if (gameOverUI != null)
         {
             gameOverUI.SetActive(true);
         }
 
-        Invoke("RestartGame", 2f);
+        Invoke("StartDeath", 2f);
+
     }
 
-    void RestartGame()
+    public void StartDeath()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        SceneManager.LoadScene("DieScene");
     }
 }

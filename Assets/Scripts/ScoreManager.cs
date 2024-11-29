@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Generic; // Pour List<>
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -10,71 +9,110 @@ public class ScoreManager : MonoBehaviour
     public float scoreMultiplier = 1.5f;    // Multiplicateur de vitesse d'augmentation du score
 
     private float highestPoint;
-    private int score;
-    private List<GameObject> digitObjects = new List<GameObject>();
+    public static int score;
+    public static int Bestscore;
+
+    public List<GameObject> digitObjects = new List<GameObject>(); // Pour le score actuel
+    public List<GameObject> BestdigitObjects = new List<GameObject>(); // Pour le meilleur score
+
+    public bool showBestScore = true; // Contrôle si le meilleur score est affiché
 
     void Start()
     {
+        LoadBestScore();
+
         highestPoint = player.position.y;
         score = 0;
 
-        // Initialiser un seul objet pour le premier chiffre
-        CreateDigitObjects(1);
+        // Initialiser les objets pour le score
+        CreateDigitObjects(digitObjects, 1);
+
+        // Initialiser les objets pour le meilleur score uniquement si activé
+        if (showBestScore)
+        {
+            CreateDigitObjects(BestdigitObjects, 1);
+        }
+
         UpdateScoreUI();
+        if (showBestScore)
+        {
+            UpdateBestScoreUI();
+        }
     }
 
     void Update()
     {
-        // Si le joueur dépasse le point le plus haut, mettre à jour le score
+        // Mettre à jour le score si le joueur monte plus haut
         if (player.position.y > highestPoint)
         {
             highestPoint = player.position.y;
-
-            // Calcul du score en appliquant le multiplicateur
             score = Mathf.FloorToInt(highestPoint * scoreMultiplier);
 
-            // Mettre à jour l'affichage du score
             UpdateScoreUI();
+
+            if (score > Bestscore)
+            {
+                Bestscore = score;
+                SaveBestScore();
+                if (showBestScore)
+                {
+                    UpdateBestScoreUI();
+                }
+            }
         }
     }
 
-    void CreateDigitObjects(int digitCount)
+    void CreateDigitObjects(List<GameObject> digitList, int digitCount)
     {
-        // Supprimer les objets de chiffres précédents, s'il y en a
-        foreach (GameObject digit in digitObjects)
+        foreach (GameObject digit in digitList)
         {
             Destroy(digit);
         }
-        digitObjects.Clear();
+        digitList.Clear();
 
-        // Créer de nouveaux objets de chiffre pour le nombre de chiffres requis
         for (int i = 0; i < digitCount; i++)
         {
             GameObject digit = Instantiate(digitPrefab, transform);
-            digitObjects.Add(digit);
+            digitList.Add(digit);
         }
     }
 
-    void UpdateScoreUI()
+    public void UpdateScoreUI()
     {
-        // Convertir le score en chaîne pour obtenir le nombre de chiffres
-        string scoreStr = score.ToString();
-        int digitCount = scoreStr.Length;
+        UpdateDigitObjects(digitObjects, score);
+    }
 
-        // Ajuster le nombre d'objets chiffre si nécessaire
-        if (digitObjects.Count != digitCount)
+    public void UpdateBestScoreUI()
+    {
+        UpdateDigitObjects(BestdigitObjects, Bestscore);
+    }
+
+    void UpdateDigitObjects(List<GameObject> digitList, int value)
+    {
+        string valueStr = value.ToString();
+        int digitCount = valueStr.Length;
+
+        if (digitList.Count != digitCount)
         {
-            CreateDigitObjects(digitCount);
+            CreateDigitObjects(digitList, digitCount);
         }
 
-        // Mettre à jour chaque chiffre avec le sprite correspondant et le positionner de gauche à droite
         for (int i = 0; i < digitCount; i++)
         {
-            int digit = int.Parse(scoreStr[i].ToString());
-            digitObjects[i].GetComponent<SpriteRenderer>().sprite = digitSprites[digit];
-
-            // Positionner chaque chiffre de gauche à droite
-            digitObjects[i].transform.localPosition = new Vector3(i * 0.2f, 0, 0); // Ajustez pour espacement
+            int digit = int.Parse(valueStr[i].ToString());
+            digitList[i].GetComponent<SpriteRenderer>().sprite = digitSprites[digit];
+            digitList[i].transform.localPosition = new Vector3(i * 0.2f, 0, 0); // Ajustez l'espacement
         }
+    }
+
+    void SaveBestScore()
+    {
+        PlayerPrefs.SetInt("BestScore", Bestscore);
+        PlayerPrefs.Save();
+    }
+
+    void LoadBestScore()
+    {
+        Bestscore = PlayerPrefs.GetInt("BestScore", 0);
     }
 }
