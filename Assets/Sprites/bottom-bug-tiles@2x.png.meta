@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cb7d6e5f9923c4348abc306bdcefd855
+guid: 3b339a03ca978df4d8717771fa0289c9
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -97,34 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Default_0
+      name: bottom-bug-tiles@2x_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 214
-        height: 480
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cf5fb82daf0a54644908b708c3575d20
-      internalID: -615509474
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Default_1
-      rect:
-        serializedVersion: 2
-        x: 214
-        y: 0
-        width: 106
-        height: 340
+        x: 2
+        y: 18
+        width: 640
+        height: 108
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,8 +111,113 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 386547e299195c0478ce6a3187c1f7f6
-      internalID: -450723499
+      spriteID: 2f9cd5e0c87927b408d7020ec7a1d86a
+      internalID: 2024752458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bottom-bug-tiles@2x_1
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 87
+        width: 43
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e701b70fdba0ae41a2d093a21df7291
+      internalID: -1364157673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bottom-bug-tiles@2x_2
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 88
+        width: 73
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90ef7ee863696da4e9efe9a12b4bc269
+      internalID: 910085015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bottom-bug-tiles@2x_3
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 52
+        width: 42
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d520d5c70af51d4cba0488cb1fa54b7
+      internalID: -1177171615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bottom-bug-tiles@2x_4
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 36
+        width: 41
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f257c7620ea26bc45bd24c167b8b68a5
+      internalID: -1523891875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bottom-bug-tiles@2x_6
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 4
+        width: 58
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1fe0669dc9b4c6846b95278d925f4381
+      internalID: -1948301450
       vertices: []
       indices: 
       edges: []
@@ -149,8 +233,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Default_0: -615509474
-      Default_1: -450723499
+      bottom-bug-tiles@2x_0: 2024752458
+      bottom-bug-tiles@2x_1: -1364157673
+      bottom-bug-tiles@2x_2: 910085015
+      bottom-bug-tiles@2x_3: -1177171615
+      bottom-bug-tiles@2x_4: -1523891875
+      bottom-bug-tiles@2x_5: -762464720
+      bottom-bug-tiles@2x_6: -1948301450
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

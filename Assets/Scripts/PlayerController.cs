@@ -12,16 +12,20 @@ public class PlayerController : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Sprite spriteGauche;
     public Sprite spriteDroite;
-    public Sprite spriteHaut; // Sprite du personnage regardant vers le haut
-    public Sprite spriteJambesPlieesGauche;
-    public Sprite spriteJambesPlieesDroite;
-    public Sprite spriteJambesPlieesHaut;
+    public Sprite spriteHaut;
+
+    private bool gauche=false;
+    private bool droite=false;
+
+    private bool haut=false;
+
 
 
     public GameObject cannonObject; // GameObject représentant le canon attaché à la tête
     public GameObject projectilePrefab; // Associe ici le prefab du projectile
     public float projectileSpeed;
     public GameObject gameOverUI;
+    public Animator animator;
 
     // Limites du terrain
     private float minX = -3f;
@@ -35,12 +39,13 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator.SetBool("isMovingLeft", true);
         cannonObject.SetActive(false); // Le canon est désactivé par défaut
         if (projectilePrefab == null)
         {
             Debug.Log("oe");
-            // Tente de le réassigner depuis les ressources si manquant
             projectilePrefab = Resources.Load<GameObject>("Projectile");
 
             if (projectilePrefab == null)
@@ -50,26 +55,40 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveX = Input.GetAxis("Horizontal") * moveSpeed;
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            spriteRenderer.sprite = spriteGauche;
-            cannonObject.SetActive(false); // Désactive le canon
+            animator.SetBool("isMovingUp", false);
+            animator.SetBool("isMovingRight", false);
+            animator.SetBool("isMovingLeft", true);
+            gauche=true;
+            droite=false;
+            haut=false;
+            cannonObject.SetActive(false); 
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            spriteRenderer.sprite = spriteDroite;
+            animator.SetBool("isMovingLeft", false);
+            animator.SetBool("isMovingUp", false);
+            animator.SetBool("isMovingRight", true);
+            gauche=false;
+            droite=true;
+            haut=false;
             cannonObject.SetActive(false); // Désactive le canon
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            spriteRenderer.sprite = spriteHaut; // Affiche le sprite du personnage regardant vers le haut
-            cannonObject.SetActive(true); // Active le canon
-            FireProjectile(); // Tire un projectile
+            animator.SetBool("isMovingLeft", false);
+            animator.SetBool("isMovingRight", false);
+            animator.SetBool("isMovingUp", true);
+            gauche=false;
+            droite=false;
+            haut=true;
+            cannonObject.SetActive(true); 
+            FireProjectile();
         }
     }
 
@@ -96,21 +115,30 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            // Change le sprite du personnage en fonction de la direction actuelle
-            if (spriteRenderer.sprite == spriteGauche)
+            if (collision.relativeVelocity.y<=0f)
             {
-                spriteRenderer.sprite = spriteJambesPlieesGauche;
-            }
-            else if (spriteRenderer.sprite == spriteDroite)
-            {
-                spriteRenderer.sprite = spriteJambesPlieesDroite;
-            }
-            else if (spriteRenderer.sprite == spriteHaut)
-            {
-                spriteRenderer.sprite = spriteJambesPlieesHaut;
+                if (gauche)
+                {
+                    animator.SetBool("isMovingLeft", false); 
+                    animator.SetBool("isOnPlatform", true);
+                    cannonObject.SetActive(false); 
+                }
+                else if (droite)
+                {
+                    animator.SetBool("isMovingRight", false);
+                    animator.SetBool("isOnPlatform", true);
+                    cannonObject.SetActive(false);
+
+                }
+                else if (haut)
+                {
+                    animator.SetBool("isMovingUp", false);
+                    animator.SetBool("isOnPlatform", true);
+                    cannonObject.SetActive(true); 
+                }
             }
         }
-
+    
         // Si le personnage touche un monstre, conservez le comportement existant
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -133,19 +161,23 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            // Retour au sprite original en fonction de la direction actuelle
-            if (spriteRenderer.sprite == spriteJambesPlieesGauche)
+            animator.SetBool("isOnPlatform", false);
+            if(gauche)
             {
-                spriteRenderer.sprite = spriteGauche;
+                animator.SetBool("isMovingLeft", true);
             }
-            else if (spriteRenderer.sprite == spriteJambesPlieesDroite)
+            else if (droite)
             {
-                spriteRenderer.sprite = spriteDroite;
+                animator.SetBool("isMovingRight", true);
+                cannonObject.SetActive(false);
+
             }
-            else if (spriteRenderer.sprite == spriteJambesPlieesHaut)
+            else if (haut)
             {
-                spriteRenderer.sprite = spriteHaut;
+                animator.SetBool("isMovingUp", true);
+                cannonObject.SetActive(true); 
             }
+
         }
     }
 

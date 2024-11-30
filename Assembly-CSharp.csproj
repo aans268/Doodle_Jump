@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\WhitePlatform.cs" />
     <Compile Include="Assets\Scripts\Fondrecycleur.cs" />
     <Compile Include="Assets\Scripts\MenuController.cs" />
+    <Compile Include="Assets\Scripts\DoodleMenu.cs" />
     <Compile Include="Assets\Scripts\BluePlatform.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
   </ItemGroup>
