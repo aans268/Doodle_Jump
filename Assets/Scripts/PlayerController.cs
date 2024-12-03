@@ -10,17 +10,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     private float moveX;
     public SpriteRenderer spriteRenderer;
-    public Sprite spriteGauche;
-    public Sprite spriteDroite;
-    public Sprite spriteHaut;
-
-    private bool gauche=false;
-    private bool droite=false;
-
-    private bool haut=false;
-
-
-
+    
     public GameObject cannonObject; // GameObject représentant le canon attaché à la tête
     public GameObject projectilePrefab; // Associe ici le prefab du projectile
     public float projectileSpeed;
@@ -41,7 +31,6 @@ public class PlayerController : MonoBehaviour
     {
         
         spriteRenderer = GetComponent<SpriteRenderer>();
-        animator.SetBool("isMovingLeft", true);
         cannonObject.SetActive(false); // Le canon est désactivé par défaut
         if (projectilePrefab == null)
         {
@@ -61,32 +50,17 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            animator.SetBool("isMovingUp", false);
-            animator.SetBool("isMovingRight", false);
-            animator.SetBool("isMovingLeft", true);
-            gauche=true;
-            droite=false;
-            haut=false;
+            animator.SetInteger("lookDirection", 0);
             cannonObject.SetActive(false); 
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            animator.SetBool("isMovingLeft", false);
-            animator.SetBool("isMovingUp", false);
-            animator.SetBool("isMovingRight", true);
-            gauche=false;
-            droite=true;
-            haut=false;
+            animator.SetInteger("lookDirection", 1);
             cannonObject.SetActive(false); // Désactive le canon
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            animator.SetBool("isMovingLeft", false);
-            animator.SetBool("isMovingRight", false);
-            animator.SetBool("isMovingUp", true);
-            gauche=false;
-            droite=false;
-            haut=true;
+            animator.SetInteger("lookDirection", 2);
             cannonObject.SetActive(true); 
             FireProjectile();
         }
@@ -117,25 +91,9 @@ public class PlayerController : MonoBehaviour
         {
             if (collision.relativeVelocity.y<=0f)
             {
-                if (gauche)
-                {
-                    animator.SetBool("isMovingLeft", false); 
-                    animator.SetBool("isOnPlatform", true);
-                    cannonObject.SetActive(false); 
-                }
-                else if (droite)
-                {
-                    animator.SetBool("isMovingRight", false);
-                    animator.SetBool("isOnPlatform", true);
-                    cannonObject.SetActive(false);
+                animator.SetBool("isOnPlatform", true);
+                
 
-                }
-                else if (haut)
-                {
-                    animator.SetBool("isMovingUp", false);
-                    animator.SetBool("isOnPlatform", true);
-                    cannonObject.SetActive(true); 
-                }
             }
         }
     
@@ -162,22 +120,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Platform"))
         {
             animator.SetBool("isOnPlatform", false);
-            if(gauche)
-            {
-                animator.SetBool("isMovingLeft", true);
-            }
-            else if (droite)
-            {
-                animator.SetBool("isMovingRight", true);
-                cannonObject.SetActive(false);
-
-            }
-            else if (haut)
-            {
-                animator.SetBool("isMovingUp", true);
-                cannonObject.SetActive(true); 
-            }
-
+            
         }
     }
 

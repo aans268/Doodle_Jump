@@ -153,6 +153,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ressort
       objectReference: {fileID: 0}
+    - target: {fileID: 4424576795157334244, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
+      propertyPath: m_TagString
+      value: Platform
+      objectReference: {fileID: 0}
     - target: {fileID: 8626268315647200610, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.11176
@@ -678,9 +682,6 @@ MonoBehaviour:
   moveSpeed: 10
   rb: {fileID: 621869620}
   spriteRenderer: {fileID: 0}
-  spriteGauche: {fileID: 0}
-  spriteDroite: {fileID: 0}
-  spriteHaut: {fileID: 0}
   cannonObject: {fileID: 1554933181}
   projectilePrefab: {fileID: 8367700477264178921}
   projectileSpeed: 15
