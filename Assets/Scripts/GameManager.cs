@@ -255,7 +255,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (Vector3 hole in holePositions)
         {
-            if (Vector3.Distance(position, hole) < 2f) // Ajuste le seuil selon la taille du trou
+            if (Vector3.Distance(position, hole) < 1.5f) // Ajuste le seuil selon la taille du trou
             {
                 return true;
             }

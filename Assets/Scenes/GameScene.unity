@@ -171,7 +171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8626268315647200610, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.08
+      value: -1.246
       objectReference: {fileID: 0}
     - target: {fileID: 8626268315647200610, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -218,6 +218,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4424576795157334244, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1697544949}
+    - targetCorrespondingSourceObject: {fileID: 4424576795157334244, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1697544954}
   m_SourcePrefab: {fileID: 100100000, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
 --- !u!1 &135703183
 GameObject:
@@ -1564,10 +1567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061f6996b76494b4ba3fddf2b3984acf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundPrefab: {fileID: 2545174527355437428, guid: 89a502f6d1104c744b3c5438ae77df9c, type: 3}
-  playerTransform: {fileID: 621869623}
-  spawnDistance: 10
-  lastSpawnY: 0
 --- !u!114 &1675346901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1580,9 +1579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a435b0925b097646bf71291e1402414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgrounds: []
-  playerTransform: {fileID: 621869623}
-  recycleOffset: 20
 --- !u!4 &1675346902
 Transform:
   m_ObjectHideFlags: 0
@@ -1675,7 +1671,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.0012863278}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1686,8 +1682,29 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.17, y: 0.12}
+  m_Size: {x: 0.17, y: 0.12915468}
   m_EdgeRadius: 0
+--- !u!95 &1697544954
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697544948}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 448cbd002f3a8084789fd16a40bb0f93, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1764675631
 GameObject:
   m_ObjectHideFlags: 0
@@ -2583,6 +2600,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster Green
       objectReference: {fileID: 0}
+    - target: {fileID: 3462958876695352166, guid: 5e0e0ff9c2146934dbf79caa333996d8, type: 3}
+      propertyPath: m_Size.x
+      value: 0.92756295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3462958876695352166, guid: 5e0e0ff9c2146934dbf79caa333996d8, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.00762403
+      objectReference: {fileID: 0}
     - target: {fileID: 6774623951829315498, guid: 5e0e0ff9c2146934dbf79caa333996d8, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -2854,6 +2879,22 @@ PrefabInstance:
     - target: {fileID: 517258434953197396, guid: 1aeff09f98dba2848994c5af7b97eb8a, type: 3}
       propertyPath: m_Name
       value: Monster Purple
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090502834263120367, guid: 1aeff09f98dba2848994c5af7b97eb8a, type: 3}
+      propertyPath: m_Size.x
+      value: 0.58702374
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090502834263120367, guid: 1aeff09f98dba2848994c5af7b97eb8a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.46033072
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090502834263120367, guid: 1aeff09f98dba2848994c5af7b97eb8a, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.0050828457
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090502834263120367, guid: 1aeff09f98dba2848994c5af7b97eb8a, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.005082667
       objectReference: {fileID: 0}
     - target: {fileID: 4513928411836010982, guid: 1aeff09f98dba2848994c5af7b97eb8a, type: 3}
       propertyPath: m_LocalScale.x

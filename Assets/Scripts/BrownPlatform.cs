@@ -14,11 +14,6 @@ public class BrownPlatform : MonoBehaviour
     {
         // Vérifiez que tous les composants nécessaires sont attachés
         animator = GetComponent<Animator>();
-        if (animator == null)
-        {
-            Debug.LogError("Animator est manquant sur la plateforme marron !");
-        }
-
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
