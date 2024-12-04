@@ -5,7 +5,7 @@ using UnityEngine;
 public class RessortSpawner : MonoBehaviour
 {
      public GameObject springPrefab;  // Le prefab du ressort
-    public float spawnChance = 0.2f; // Probabilité qu'un ressort apparaisse
+    public float spawnChance = 0.1f; // Probabilité qu'un ressort apparaisse
 
     void Start()
     {
@@ -24,7 +24,7 @@ public class RessortSpawner : MonoBehaviour
         float randomX = Random.Range(platformX - platformWidth / 2, platformX + platformWidth / 2); // Position aléatoire sur la plateforme
 
         // Créer la position du ressort (déplacé verticalement au-dessus de la plateforme)
-        Vector3 spawnPosition = new Vector3(randomX, transform.position.y+0.14f, transform.position.z);
+        Vector3 spawnPosition = new Vector3(randomX, transform.position.y+0.2f, transform.position.z);
 
         // Instancier le ressort à la position calculée
         Instantiate(springPrefab, spawnPosition, Quaternion.identity); 

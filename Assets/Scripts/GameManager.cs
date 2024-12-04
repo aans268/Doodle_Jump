@@ -22,14 +22,14 @@ public class GameManager : MonoBehaviour
     public float monsterProb = 0.05f;
     public float holeProb = 0.01f;
 
-    private float minSpacing = 0.2f;
+    private float minSpacing = 0.4f;
     private float maxSpacing = 0.7f;
     private float minX = -2.7f;
     private float maxX = 2.7f;
 
     private float jumpHeight = 2f; // Hauteur maximale de saut du joueur
-    private float safeZoneRadius = 5f; // Rayon sécurisé autour du joueur
-
+    private float safeZoneRadius = 8f; // Rayon sécurisé autour du joueur
+    private float minMonsterSpacing = 2.5f; // Distance minimale entre deux monstres
     private Vector3 lastPlatformPosition;
     private List<Vector3> holePositions = new List<Vector3>();
     private List<Vector3> monsterPositions = new List<Vector3>();
@@ -208,10 +208,20 @@ public class GameManager : MonoBehaviour
 
     void GenerateMonster(Vector3 position)
     {
+        // Vérifier la distance minimale avec les monstres existants
+        foreach (Vector3 monsterPosition in monsterPositions)
+        {
+            if (Vector3.Distance(position, monsterPosition) < minMonsterSpacing)
+            {
+                return; // Annuler la génération si trop proche
+            }
+        }
+
         GameObject monsterToSpawn = ChooseMonster();
         monsterPositions.Add(position);
         Instantiate(monsterToSpawn, position, Quaternion.identity);
     }
+
 
     GameObject ChooseMonster()
     {
@@ -245,7 +255,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (Vector3 hole in holePositions)
         {
-            if (Vector3.Distance(position, hole) < 1f) // Ajuste le seuil selon la taille du trou
+            if (Vector3.Distance(position, hole) < 2f) // Ajuste le seuil selon la taille du trou
             {
                 return true;
             }
@@ -257,7 +267,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (Vector3 monster in monsterPositions)
         {
-            if (Vector3.Distance(position, monster) < 1f) // Ajuste le seuil selon la taille des monstres
+            if (Vector3.Distance(position, monster) < 1.3f) // Ajuste le seuil selon la taille des monstres
             {
                 return true;
             }

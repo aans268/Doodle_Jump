@@ -61,7 +61,7 @@ public class BrownPlatform : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Rigidbody2D manquant dans la plateforme lors de l'activation.");
+                    //Debug.LogError("Rigidbody2D manquant dans la plateforme lors de l'activation.");
                 }
             }
         }
