@@ -5,6 +5,15 @@ using UnityEngine;
 public class RessortController : MonoBehaviour
 {
     public float bounceForce = 20f; // Force du rebond
+    public Animator animator;  // Référence à l'Animator de l'objet
+
+
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+
+    }
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -15,8 +24,9 @@ public class RessortController : MonoBehaviour
             Vector2 contactPoint = collision.ClosestPoint(transform.position);
 
             // Vérifier si le joueur entre en collision par le dessus du ressort
-            if (contactPoint.y > transform.position.y)
+            if (contactPoint.y >= transform.position.y)
             {
+                animator.SetBool("isActivated", true);
                 // Appliquer une force verticale au joueur pour le faire sauter
                 Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
                 if (rb != null)
@@ -25,7 +35,8 @@ public class RessortController : MonoBehaviour
                     rb.velocity = new Vector2(rb.velocity.x, bounceForce);
                 }
             }
+
         }
-        
     }
+    
 }

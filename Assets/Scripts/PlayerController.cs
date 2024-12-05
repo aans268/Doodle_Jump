@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public GameObject cannonObject; // GameObject représentant le canon attaché à la tête
     public GameObject projectilePrefab; // Associe ici le prefab du projectile
     public float projectileSpeed;
-    public GameObject gameOverUI;
     public Animator animator;
 
     // Limites du terrain
@@ -89,11 +88,9 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            if (collision.relativeVelocity.y<=0f)
+            if (collision.relativeVelocity.y>=0f)
             {
                 animator.SetBool("isOnPlatform", true);
-                
-
             }
         }
     
@@ -140,15 +137,7 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         gameObject.SetActive(false);
-
-
-        if (gameOverUI != null)
-        {
-            gameOverUI.SetActive(true);
-        }
-
-        Invoke("StartDeath", 2f);
-
+        Invoke("StartDeath", 1f);
     }
 
     public void StartDeath()

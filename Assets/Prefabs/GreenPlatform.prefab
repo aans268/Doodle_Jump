@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 51207948, guid: f0e712f4836d9ae46a3b5234b8b79ce9, type: 3}
+  m_Sprite: {fileID: 526631783, guid: d4b3af3d0506676488c516810b4ae9f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -173,13 +173,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: platforms_30
       objectReference: {fileID: 0}
+    - target: {fileID: 4424576795157334244, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
+      propertyPath: m_TagString
+      value: Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626268315647200610, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626268315647200610, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8626268315647200610, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.118
       objectReference: {fileID: 0}
     - target: {fileID: 8626268315647200610, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.176
+      value: 0.381
       objectReference: {fileID: 0}
     - target: {fileID: 8626268315647200610, guid: d79bcefafd77df341bcf90eed8e844e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -261,18 +273,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0036865845, y: -0.15347153}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.17, y: 0.12}
+    oldSize: {x: 0.34, y: 0.55}
     newSize: {x: 0.17, y: 0.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.17, y: 0.12}
+  m_Size: {x: 0.34162623, y: 0.23603946}
   m_EdgeRadius: 0
 --- !u!114 &5057191943709518019
 MonoBehaviour:
